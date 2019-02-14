@@ -1,0 +1,15 @@
+* Verify systems are registered with Satellite and repos enabled
+* Verify hostnames
+* Verify packages required for ansible and docker installed
+* Prerequisites
+* Install
+* Verify
+* Fix persistent volume recycling?
+* Apply default network policies
+* Setup project template + configure in openshift
+* User groups
+* Create cluster admin user
+* Remove user role to self-provision projects
+* Setup node labels for envs
+* Configure scheduler affinity and anti-affinity
+* Run smoke test
