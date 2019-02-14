@@ -1,0 +1,245 @@
+[OSEv3:vars]
+
+######################################
+# Ansible vars
+######################################
+
+timeout=60
+ansible_ssh_user=openshift
+ansible_become=yes
+
+######################################
+# Openshift Basic Vars
+######################################
+
+openshift_release=3.11
+openshift_deployment_type="openshift-enterprise"
+
+# Not a production environment
+#openshift_disable_check="disk_availability,memory_availability,docker_image_availability,package_version"
+
+# Default infra components to infra nodes
+openshift_hosted_infra_selector="node-role.kubernetes.io/infra=true"
+
+
+# Setup node groups to specify standard labels
+openshift_node_groups=[{"name": "node-config-master-custom", "labels": ["node-role.kubernetes.io/master=true","runtime=docker","region=uk","datacenter=kn","cluster=non-prod"]}, {"name": "node-config-infra-custom", "labels": ["node-role.kubernetes.io/infra=true","runtime=docker","region=uk","datacenter=kn","cluster=non-prod"]}, {"name": "node-config-compute-custom", "labels": ["node-role.kubernetes.io/compute=true","runtime=docker","cluster=non-prod","region=uk","datacenter=kn"], "edits": [{ "key": "kubeletArguments.pods-per-core","value": ["20"]}]}]
+
+# Configure logrotate scripts
+# See: https://github.com/nickhammond/ansible-logrotate
+logrotate_scripts=[{"name": "syslog", "path": "/var/log/cron\n/var/log/maillog\n/var/log/messages\n/var/log/secure\n/var/log/spooler\n", "options": ["daily", "rotate 7","size 500M", "compress", "sharedscripts", "missingok"], "scripts": {"postrotate": "/bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true"}}]
+
+# Enable cockpit
+osm_use_cockpit=true 
+osm_cockpit_plugins=['cockpit-kubernetes']
+
+openshift_node_local_quota_per_fsgroup=512Mi
+
+####################################################
+# Openshift Master Vars
+####################################################
+openshift_master_api_port=8443  
+openshift_master_console_port=8443
+openshift_master_cluster_method=native
+
+# TODO: Master internal VIP DNS Name
+openshift_master_cluster_hostname=lg-l-d-osf00001.libgbl.biz
+
+# TODO: Master external VIP DNS Name
+openshift_master_cluster_public_hostname=lg-l-d-osf00001.libgbl.biz
+
+# TODO: Infra VIP DNS Name (wildcard)
+# Wildcard domain for applications
+openshift_master_default_subdomain=osf.libgbl.biz
+
+####################################################
+# Certificates
+####################################################
+
+openshift_master_overwrite_named_certificates=True
+
+# TBC
+
+
+
+
+
+####################################################
+# Authentication Vars
+####################################################
+
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
+# Default users to configure
+# TODO: Update path to file and manually create this file
+openshift_master_htpasswd_file=/root/311/htpasswd
+
+## TODO: Need to confirm the LDAP details
+#openshift_master_identity_providers=[{'name': 'ldap', 'challenge': 'true', 'login': 'true', 'kind': 'LDAPPasswordIdentityProvider','attributes': {'id': ['dn'], 'email': ['mail'], 'name': ['cn'], 'preferredUsername': ['uid']}, 'bindDN': 'uid=admin,cn=users,cn=accounts,dc=shared,dc=example,dc=opentlc,dc=com', 'bindPassword': 'r3dh4t1!', 'ca': '/etc/origin/master/ipa-ca.crt','insecure': 'false', 'url': 'ldaps://ipa.shared.example.opentlc.com:636/cn=users,cn=accounts,dc=shared,dc=example,dc=opentlc,dc=com?uid?sub?(memberOf=cn=ocp-users,cn=groups,cn=accounts,dc=shared,dc=example,dc=opentlc,dc=com)'},{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider']
+#openshift_master_ldap_ca_file=/root/ipa-ca.crt
+
+
+#####################################################
+# Openshift Network Vars
+#####################################################
+
+os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
+
+
+# TODO: Check proxy details and configure if needed
+#openshift_http_proxy="http://172.23.29.156:3128"
+#openshift_https_proxy="http://172.23.29.156:3128"
+
+#####################################################
+# VSphere
+# https://docs.openshift.com/container-platform/3.11/install_config/configuring_vsphere.html
+#####################################################
+
+# TODO: Update with details of vsphere
+openshift_cloudprovider_kind=vsphere
+openshift_cloudprovider_vsphere_username=administrator@vsphere.local 
+openshift_cloudprovider_vsphere_password=<password>
+openshift_cloudprovider_vsphere_host=10.x.y.32 
+openshift_cloudprovider_vsphere_datacenter=<Datacenter> 
+openshift_cloudprovider_vsphere_datastore=<Datastore> 
+openshift_cloudprovider_vsphere_folder="folder"
+
+# VM deployment
+#openshift_cloudprovider_vsphere_template="rhel75-template"
+#openshift_cloudprovider_vsphere_vm_network="VM Network"
+#openshift_cloudprovider_vsphere_vm_netmask="255.255.254.0"
+#openshift_cloudprovider_vsphere_vm_gateway="10.x.y.254"
+#openshift_cloudprovider_vsphere_vm_dns="10.x.y.5"
+
+
+####################################################
+# Openshift Metrics
+####################################################
+
+openshift_metrics_install_metrics=True 
+openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+
+openshift_metrics_storage_kind=dynamic
+openshift_metrics_storage_volume_size=100Gi
+
+####################################################
+# Prometheus
+####################################################
+
+openshift_cluster_monitoring_operator_node_selector={"node-role.kubernetes.io/infra":"true"}
+openshift_cluster_monitoring_operator_prometheus_storage_enabled=True
+openshift_cluster_monitoring_operator_prometheus_storage_capacity=250Gi
+
+
+####################################################
+# Openshift Logging
+####################################################
+
+openshift_logging_install_logging=True 
+openshift_logging_es_cluster_size=3
+openshift_logging_es_memory_limit=8Gi
+
+openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+openshift_logging_fluentd_nodeselector={"node-role.kubernetes.io/infra": "true"}
+
+openshift_logging_storage_kind=dynamic
+openshift_logging_elasticsearch_storage_type=pvc
+openshift_logging_es_pvc_dynamic=true
+openshift_logging_es_pvc_size=250Gi
+
+
+####################################################
+# Openshift Router
+####################################################
+
+oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
+openshift_examples_modify_imagestreams=true
+
+openshift_hosted_router_selector='node-role.kubernetes.io/infra=true' 
+openshift_hosted_router_replicas=3 
+
+####################################################
+# Openshift Registry
+####################################################
+
+openshift_hosted_registry_selector='node-role.kubernetes.io/infra=true' 
+openshift_hosted_registry_storage_kind=vsphere
+openshift_hosted_registry_storage_access_modes=['ReadWriteOnce']
+openshift_hosted_registry_storage_annotations=['volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/vsphere-volume']
+openshift_hosted_registry_replicas=1
+
+
+####################################################
+# Openshift Service Catalog
+####################################################
+
+openshift_enable_service_catalog=true 
+template_service_broker_install=true 
+openshift_template_service_broker_namespaces=['openshift']
+
+ansible_service_broker_install=true 
+ansible_service_broker_local_registry_whitelist=['.*-apb$']
+
+template_service_broker_selector={"node-role.kubernetes.io/infra":"true"} 
+openshift_additional_projects={'openshift-template-service-broker': {'default_node_selector': ''}} 
+
+openshift_hosted_etcd_storage_kind=dynamic
+openshift_hosted_etcd_storage_volume_name=etcd-vol
+openshift_hosted_etcd_storage_access_modes=["ReadWriteOnce"]
+openshift_hosted_etcd_storage_volume_size=1G
+openshift_hosted_etcd_storage_labels={'storage': 'etcd'}
+
+
+
+[OSEv3:children]
+masters
+infras
+apps
+etcd
+nodes
+
+# host group for masters
+[masters]
+msamst-kn-n001.systems.private vm_name=vc-l-n03408 ipv4addr=10.94.58.100
+msamst-kn-n002.systems.private vm_name=vc-l-n03410 ipv4addr=10.94.57.95
+msamst-kn-n003.systems.private vm_name=vc-l-n03411 ipv4addr=10.94.55.97
+
+# host group for etcd
+[etcd]
+msamst-kn-n001.systems.private
+msamst-kn-n002.systems.private
+msamst-kn-n003.systems.private
+
+# host group for infra nodes
+[infras]
+msainf-kn-n001.systems.private vm_name=vc-l-n03412 ipv4addr=10.94.58.101
+msainf-kn-n002.systems.private vm_name=vc-l-n03413 ipv4addr=10.94.56.101
+msainf-kn-n003.systems.private vm_name=vc-l-n03414 ipv4addr=10.94.57.96
+
+# host group for app nodes
+[apps]
+msaapp-kn-n001.systems.private vm_name=vc-l-n03415 ipv4addr=10.94.55.98
+msaapp-kn-n002.systems.private vm_name=vc-l-n03419 ipv4addr=10.94.55.99
+msaapp-kn-n003.systems.private vm_name=vc-l-n03421 ipv4addr=10.94.56.100
+msaapp-kn-n004.systems.private vm_name=vc-l-n03422 ipv4addr=10.94.57.97
+msaapp-kn-n005.systems.private vm_name=vc-l-n03424 ipv4addr=10.94.58.102
+msaapp-kn-n006.systems.private vm_name=vc-l-n03427 ipv4addr=10.94.55.96
+
+
+# host group for nodes
+[nodes]
+msamst-kn-n001.systems.private openshift_node_group_name='node-config-master-custom'
+msamst-kn-n002.systems.private openshift_node_group_name='node-config-master-custom'
+msamst-kn-n003.systems.private openshift_node_group_name='node-config-master-custom'
+msainf-kn-n001.systems.private openshift_node_group_name='node-config-infra-custom'
+msainf-kn-n002.systems.private openshift_node_group_name='node-config-infra-custom'
+msainf-kn-n003.systems.private openshift_node_group_name='node-config-infra-custom'
+msaapp-kn-n001.systems.private openshift_node_group_name='node-config-compute-custom'
+msaapp-kn-n002.systems.private openshift_node_group_name='node-config-compute-custom'
+msaapp-kn-n003.systems.private openshift_node_group_name='node-config-compute-custom'
+msaapp-kn-n004.systems.private openshift_node_group_name='node-config-compute-custom'
+msaapp-kn-n005.systems.private openshift_node_group_name='node-config-compute-custom'
+msaapp-kn-n006.systems.private openshift_node_group_name='node-config-compute-custom'
