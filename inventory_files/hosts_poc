@@ -1,0 +1,168 @@
+[OSEv3:vars]
+
+######################################
+# Ansible vars
+######################################
+
+timeout=60
+ansible_ssh_user=root
+
+
+######################################
+# Openshift Basic Vars
+######################################
+
+openshift_release=3.11
+openshift_deployment_type="openshift-enterprise"
+
+# Not a production environment
+openshift_disable_check="disk_availability,memory_availability,docker_image_availability,package_version"
+
+# Default infra components to infra nodes
+openshift_hosted_infra_selector="node-role.kubernetes.io/infra=true"
+
+
+# Setup node groups to specify labels
+openshift_node_groups=[{"name": "node-config-master-custom", "labels": ["node-role.kubernetes.io/master=true","node-role.kubernetes.io/infra=true","runtime=docker","region=nl","datacenter=ecx","cluster=poc"]}, {"name": "node-config-infra-custom", "labels": ["node-role.kubernetes.io/infra=true","runtime=docker","region=nl","datacenter=ecx","cluster=poc"]}, {"name": "node-config-compute-custom", "labels": ["node-role.kubernetes.io/compute=true","runtime=docker","cluster=poc","region=nl","datacenter=ecx"], "edits": [{ "key": "kubeletArguments.pods-per-core","value": ["20"]}]}]
+
+# Configure logrotate scripts
+# See: https://github.com/nickhammond/ansible-logrotate
+logrotate_scripts=[{"name": "syslog", "path": "/var/log/cron\n/var/log/maillog\n/var/log/messages\n/var/log/secure\n/var/log/spooler\n", "options": ["daily", "rotate 7","size 500M", "compress", "sharedscripts", "missingok"], "scripts": {"postrotate": "/bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true"}}]
+
+# Enable cockpit
+osm_use_cockpit=true 
+osm_cockpit_plugins=['cockpit-kubernetes']
+
+####################################################
+# Openshift Master Vars
+####################################################
+openshift_master_api_port=8443  
+openshift_master_console_port=8443
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=lg-l-d-osf00001.libgbl.biz
+openshift_master_cluster_public_hostname=lg-l-d-osf00001.libgbl.biz
+openshift_master_default_subdomain=osf.libgbl.biz
+
+
+
+####################################################
+# Authentication Vars
+####################################################
+
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
+openshift_master_htpasswd_file=/root/311/htpasswd
+
+
+#####################################################
+# Openshift Network Vars
+#####################################################
+
+os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
+
+#os_sdn_network_plugin_name='redhat/openshift-ovs-multitenancy'
+
+# Proxy Config
+openshift_http_proxy="http://172.23.29.156:3128"
+openshift_https_proxy="http://172.23.29.156:3128"
+
+
+####################################################
+# Openshift Metrics
+####################################################
+
+openshift_metrics_install_metrics=True 
+openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+
+# TBD Storage
+
+
+####################################################
+# Openshift Logging
+####################################################
+
+openshift_logging_install_logging=True 
+openshift_logging_es_cluster_size=1
+openshift_logging_es_memory_limit=8Gi
+
+openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra":"true"} 
+
+# TBD Storage
+
+####################################################
+# Openshift Router
+####################################################
+
+oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
+openshift_examples_modify_imagestreams=true
+
+openshift_hosted_router_selector='node-role.kubernetes.io/infra=true' 
+openshift_hosted_router_replicas=2 
+
+####################################################
+# Openshift Registry
+####################################################
+
+openshift_hosted_registry_selector='node-role.kubernetes.io/infra=true' 
+openshift_hosted_registry_replicas=1 
+
+# TBD Storage
+
+
+####################################################
+# Openshift Service Catalog
+####################################################
+
+openshift_enable_service_catalog=true 
+template_service_broker_install=true 
+openshift_template_service_broker_namespaces=['openshift']
+
+ansible_service_broker_install=true 
+ansible_service_broker_local_registry_whitelist=['.*-apb$']
+
+template_service_broker_selector={"node-role.kubernetes.io/infra":"true"} 
+openshift_additional_projects={'openshift-template-service-broker': {'default_node_selector': ''}} 
+
+# TBD Storage
+
+
+####################################################
+# Prometheus & Grafana
+####################################################
+
+# TBD
+
+
+
+
+
+[OSEv3:children]
+masters
+nodes
+etcd
+
+
+# host group for masters
+[masters]
+lg-l-d-osf00001.libgbl.biz openshift_ip=172.23.113.246
+lg-l-d-osf00002.libgbl.biz openshift_ip=172.23.113.245
+lg-l-d-osf00003.libgbl.biz openshift_ip=172.23.113.247
+
+# host group for etcd
+[etcd]
+lg-l-d-osf00001.libgbl.biz openshift_ip=172.23.113.246
+lg-l-d-osf00002.libgbl.biz openshift_ip=172.23.113.245
+lg-l-d-osf00003.libgbl.biz openshift_ip=172.23.113.247
+
+# host group for nodes, includes region info
+[nodes]
+lg-l-d-osf00001.libgbl.biz openshift_node_group_name='node-config-master-custom'
+lg-l-d-osf00002.libgbl.biz openshift_node_group_name='node-config-master-custom'
+lg-l-d-osf00003.libgbl.biz openshift_node_group_name='node-config-master-custom'
+lg-l-d-osf00004.libgbl.biz openshift_node_group_name='node-config-compute-custom'
+lg-l-d-osf00005.libgbl.biz openshift_node_group_name='node-config-compute-custom'
+lg-l-d-osf00006.libgbl.biz openshift_node_group_name='node-config-compute-custom'
+lg-l-d-osf00007.libgbl.biz openshift_node_group_name='node-config-compute-custom'
