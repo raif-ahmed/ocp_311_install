@@ -1,0 +1,34 @@
+---
+#################################################
+# Openshift One-click install
+# Author: B.F. Taljaard
+# Date: 18 Feb 2019
+#################################################
+
+# Run init playbook
+- name: Execute the init playbook
+  import_playbook: /root/311/playbooks/init.yaml
+
+# Run install playbook
+- name: Execute the install playbook
+  import_playbook: /root/311/playbooks/install.yaml
+
+# Run verify playbook
+- name: Execute the verify playbook
+  import_playbook: /root/311/playbooks/verify.yaml
+
+# Run nfs playbook
+- name: Execute the nfs playbook
+  import_playbook: /root/311/playbooks/nfs.yaml
+
+# Run multitenancy config playbook
+- name: Execute the multitenancy playbook
+  import_playbook: /root/311/playbooks/multitenancy.yaml
+
+# Run smoke test playbook
+- name: Execute the smoke test playbook
+  import_playbook: /root/311/playbooks/smoke-test.yaml
+
+# Run CICD Playbook
+- name: Execute CICD Playbook
+  import_playbook: /root/311/playbooks/cicd.yaml

@@ -1,0 +1,50 @@
+---
+#################################################
+# Openshift One-click install
+# Author: B.F. Taljaard
+# Date: 18 Feb 2019
+#################################################
+
+# Enable login from bastion host
+- name: Get kube config
+  hosts: masters[0]
+  tasks:
+    - name: copy the .kube directory from master1 to your bastion
+      fetch: 
+        src: /root/.kube/config
+        dest: /root/.kube/config 
+        flat: yes
+
+# Verify login is possible
+- name: Verify login
+  hosts: localhost
+  tasks:
+    - name: make sure you are system:dmin
+      shell: oc whoami | grep system:admin
+
+# Verify Registry has storage
+- name: Verify registry storage
+  hosts: localhost
+  tasks: 
+    - name: Check registry has pv claim
+      shell: oc get pv|grep registry-volume|grep Bound
+
+# Verify Router pod is running on each infranode
+- name: Verify router scheduled on infranodes
+  hosts: localhost
+  tasks:
+    - name: Check router pod is running on each infra node
+      shell: oc get pods -o wide -n default|grep router|grep -e infranode1 -e infranode2
+
+# Verify 3 master nodes are running
+- name: Verify HA Configuration
+  hosts: localhost
+  tasks:
+    - name: Verify 3 master nodes are running
+      shell: (( $(oc get nodes |grep master|wc -l) == 3 ))
+    - name: Verify 3 etcd pods are running
+      shell: (( $(oc get pods -o wide --all-namespaces|grep etcd|grep -e master[1,2,3]|wc -l) == 3 ))
+    - name: Check that external loadbalancer resolves
+      shell: host loadbalancer.{{ GUID['stdout'] }}.example.opentlc.com
+    - name: Check that infra apps address resolves
+      shell: host anyname.apps.{{ GUID['stdout'] }}.example.opentlc.com

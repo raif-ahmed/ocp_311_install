@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  annotations:
+    pipeline.alpha.openshift.io/uses: '[{"name": "tasks", "namespace": "", "kind": "DeploymentConfig"}]'
+  labels:
+    name: tasks-pipeline
+  name: tasks-pipeline
+spec:
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: |-
+        podTemplate(
+        label: "maven",
+        cloud: "openshift",
+        inheritFrom: "maven",
+        containers: [
+          containerTemplate(
+            name: "jnlp",
+            image: "openshift3/jenkins-agent-maven-35-rhel7",
+            resourceRequestMemory: "1Gi",
+            resourceLimitMemory: "2Gi",
+            resourceRequestCpu: "250m",
+            resourceLimitCpu: "500m"
+          )
+        ]
+        ) {
+            node('maven') {
+
+                stage('Checkout Source') {
+                  checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, userRemoteConfigs: [[url: 'https://github.com/redhat-gpte-devopsautomation/openshift-tasks.git']]])
+                }
+
+                def groupId    = getGroupIdFromPom("pom.xml")
+                def artifactId = getArtifactIdFromPom("pom.xml")
+                def version    = getVersionFromPom("pom.xml")
+
+
+                // Set the tag for the development image: version + build number
+                def devTag  = "${version}-${env.BUILD_NUMBER}"
+                // Set the tag for the production image: version
+                def prodTag = version
+
+                // Using Maven build the war file
+                stage('Build Code Artifacts') {
+                  echo "Building version ${version}"
+                  sh "mvn clean package -DskipTests=true"
+                }
+
+                // Build the OpenShift Image in OpenShift and tag it.
+                stage('Build and Tag OpenShift Image') {
+                  echo "Building OpenShift container image tasks:${devTag}"
+                  sh "oc start-build tasks --follow=true --from-file=target/openshift-tasks.war -n tasks-build"
+                  openshiftVerifyBuild bldCfg: 'tasks', checkForTriggeredDeployments: 'false', namespace: 'tasks-build', verbose: 'false'
+                  openshiftTag alias: 'false', destStream: 'tasks', destTag: devTag, destinationNamespace: 'tasks-build', namespace: 'tasks-build', srcStream: 'tasks', srcTag: 'latest', verbose: 'false'
+                }
+
+                // Deploy the built image to the Development Environment.
+                stage('Deploy to Dev') {
+                  echo "Promoting container image to Development Project"
+                  openshiftTag alias: 'false', destStream: 'tasks', destTag: devTag, destinationNamespace: 'tasks-dev', namespace: 'tasks-build', srcStream: 'tasks', srcTag: devTag, verbose: 'false'
+                  echo "Deploying container image to Development Project"
+                  sh "oc set image dc/tasks tasks=docker-registry.default.svc:5000/tasks-dev/tasks:${devTag} -n tasks-dev"
+
+                  openshiftDeploy depCfg: 'tasks', namespace: 'tasks-dev', verbose: 'false'
+                  openshiftVerifyDeployment depCfg: 'tasks', namespace: 'tasks-dev', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'true'
+                  
+                  openshiftVerifyService namespace: 'tasks-dev', svcName: 'tasks', verbose: 'false'
+
+                }
+
+                // Deploy the built image to the Test Environment.
+                stage('Deploy to Test') {
+                  echo "Promoting container image to Test Project"
+                  openshiftTag alias: 'false', destStream: 'tasks', destTag: devTag, destinationNamespace: 'tasks-test', namespace: 'tasks-dev', srcStream: 'tasks', srcTag: devTag, verbose: 'false'
+                  echo "Deploying container image to Test Project"
+                  sh "oc set image dc/tasks tasks=docker-registry.default.svc:5000/tasks-test/tasks:${devTag} -n tasks-test"
+
+                  openshiftDeploy depCfg: 'tasks', namespace: 'tasks-test', verbose: 'false'
+                  openshiftVerifyDeployment depCfg: 'tasks', namespace: 'tasks-test', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'true'
+                  
+                  openshiftVerifyService namespace: 'tasks-test', svcName: 'tasks', verbose: 'false'
+
+                }
+
+                // Deploy the built image to the Prod Environment.
+                stage('Deploy to Prod') {
+                  echo "Promoting container image to Prod Project"
+                  openshiftTag alias: 'false', destStream: 'tasks', destTag: prodTag, destinationNamespace: 'tasks-prod', namespace: 'tasks-test', srcStream: 'tasks', srcTag: devTag, verbose: 'false'
+                  echo "Deploying container image to Prod Project"
+                  sh "oc set image dc/tasks tasks=docker-registry.default.svc:5000/tasks-prod/tasks:${prodTag} -n tasks-prod"
+
+                  openshiftDeploy depCfg: 'tasks', namespace: 'tasks-prod', verbose: 'false'
+                  openshiftVerifyDeployment depCfg: 'tasks', namespace: 'tasks-prod', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'true'
+                  
+                  openshiftVerifyService namespace: 'tasks-prod', svcName: 'tasks', verbose: 'false'
+
+                }
+
+
+            }}
+            // Convenience Functions to read variables from the pom.xml
+            // Do not change anything below this line.
+            // --------------------------------------------------------
+            def getVersionFromPom(pom) {
+              def matcher = readFile(pom) =~ '<version>(.+)</version>'
+              matcher ? matcher[0][1] : null
+            }
+            def getGroupIdFromPom(pom) {
+              def matcher = readFile(pom) =~ '<groupId>(.+)</groupId>'
+              matcher ? matcher[0][1] : null
+            }
+            def getArtifactIdFromPom(pom) {
+              def matcher = readFile(pom) =~ '<artifactId>(.+)</artifactId>'
+              matcher ? matcher[0][1] : null
+            }
+    type: JenkinsPipeline
+  triggers:
+  - github:
+      secret: CzgPZAZ5m2
+    type: GitHub
+  - generic:
+      secret: CzgPZAZ5m2
+    type: Generic

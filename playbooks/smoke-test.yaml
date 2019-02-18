@@ -1,0 +1,13 @@
+---
+#################################################
+# Openshift One-click install
+# Author: B.F. Taljaard
+# Date: 18 Feb 2019
+#################################################
+
+# Run smoke test
+- name: Deploy smoke test application to verify persistence is working
+  hosts: localhost
+  tasks:
+    - name: Run smoke test script
+      script: /root/rh_adv_deployment_homework/scripts/smoke_test.sh

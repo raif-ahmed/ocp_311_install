@@ -1,0 +1,16 @@
+---
+#################################################
+# Openshift One-click install
+# Author: B.F. Taljaard
+# Date: 18 Feb 2019
+#################################################
+
+# Configure cicd example
+- name: Setup CICD example
+  hosts: localhost
+  tasks:
+    - name: Execute jenkins setup script
+      script: /root/rh_adv_deployment_homework/scripts/setup_jenkins.sh
+    - name: Setup tasks projects
+      script: /root/rh_adv_deployment_homework/scripts/setup_tasks_projects.sh
+
