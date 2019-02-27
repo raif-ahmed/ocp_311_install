@@ -143,12 +143,18 @@
         name:
           - docker-1.13.1
         state: present 
-    - name: Configure storage options
+    - name: Configure storage volume group
       lineinfile:
         path: /etc/sysconfig/docker-storage-setup
         state: present
         regexp: '^VG='
         line: 'VG=vgapp'
+    - name: Configure storage driver
+      lineinfile:
+        path: /etc/sysconfig/docker-storage-setup
+        state: present
+        regexp: '^STORAGE_DRIVER='
+        line: 'STORAGE_DRIVER=devicemapper'
     - name: Run docker storage setup
       command: /usr/bin/docker-storage-setup
 
