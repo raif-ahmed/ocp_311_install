@@ -106,12 +106,53 @@
         state: mounted
 
 
-# 20G etcd
-# 80G emptyVolumes
-# 100G Docker
 
-# - name: Create infra and app node logical volumes
+- name: Create infra and app node host storage
+  hosts: infras, apps
+  tasks:
+    - name: Unmount apps LVM and remove from fstab
+      mount: 
+        path: /u01/appl
+        src: /dev/mapper/vgapp-lv_app
+        state: absent
+    - name: Delete existing apps LVM
+      lvol:
+        vg: vgapp
+        lv: lv_app
+        state: absent
+        force: yes
+    - name: Create openshift emptyDir LVM
+      lvol:
+        vg: vgapp
+        lv: lv_emptyDir
+        size: 49g
+        state: present
+        # force: yes
+    - name: Create docker LVM
+      lvol:
+        vg: vgapp
+        lv: lv_docker
+        size: 150g
+        state: present
+    - name: Format emptyDir LVM
+      filesystem:
+        fstype: xfs
+        dev: /dev/mapper/vgapp-lv_emptyDir
+    - name: Mount emptyDir LVM
+      mount:
+        path: /var/lib/origin/openshift.local.volumes
+        src: /dev/mapper/vgapp-lv_emptyDir
+        fstype: xfs
+        opts: gquota
+        state: mounted
 
-# 100G emptyVolumes
-# 100G Docker
+# Install docker and configure storage
+- name: Configure Docker
+  hosts: nodes
+  tasks:
+    - name: Install Docker
+      yum:
+        name:
+          - docker-1.13.1
+        state: present 
 
