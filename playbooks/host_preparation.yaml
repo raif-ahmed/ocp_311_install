@@ -159,4 +159,11 @@
         line: 'STORAGE_DRIVER=devicemapper'
     - name: Run docker storage setup
       command: /usr/bin/docker-storage-setup
+    - name: Configure docker logging
+      lineinfile:
+        path: /etc/sysconfig/docker
+        state: present
+        regexp: '^OPTIONS='
+        line: "OPTIONS='--selinux-enabled --log-driver=json-file --log-opt max-size=1M --log-opt max-file=3 --signature-verification=false'"
+      
 
