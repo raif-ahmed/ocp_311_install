@@ -26,13 +26,30 @@
         path: /etc/profile.d/proxy.sh
         create: yes
         state: present
-        regex: '^export https_proxy'
+        regexp: '^export https_proxy'
         line: 'export https_proxy=http://172.23.29.156:3128'
     - name: Add http proxy configuration
       lineinfile:
         path: /etc/profile.d/proxy.sh
         create: yes
         state: present
-        regex: '^export http_proxy'
+        regexp: '^export http_proxy'
         line: 'export http_proxy=http://172.23.29.156:3128'
+    - name: Resize /var/log LVM
+      lvol:
+        vg: vgroot
+        lv: lv_log
+        size: 10g
+        resizefs: true
+    - name: Resize /var LVM
+      lvol:
+        vg: vgroot
+        lv: lv_var
+        size: 8g
+        resizefs: true
+
+# - name: Create master node logical volumes
+
+
+# - name: Create infra and app node logical volumes
 
