@@ -73,16 +73,9 @@
       lvol:
         vg: vgapp
         lv: lv_emptyDir
-        size: 39g
+        size: 40g
         state: present
-        force: yes
-    - name: Create docker LVM
-      lvol:
-        vg: vgapp
-        lv: lv_docker
-        size: 140g
-        state: present
-        force: yes
+        # force: yes
     - name: Format etcd LVM
       filesystem:
         fstype: xfs
@@ -126,15 +119,9 @@
       lvol:
         vg: vgapp
         lv: lv_emptyDir
-        size: 39g
+        size: 40g
         state: present
-        force: yes
-    - name: Create docker LVM
-      lvol:
-        vg: vgapp
-        lv: lv_docker
-        size: 60g
-        state: present
+        # force: yes
     - name: Format emptyDir LVM
       filesystem:
         fstype: xfs
@@ -156,4 +143,12 @@
         name:
           - docker-1.13.1
         state: present 
+    - name: Configure storage options
+      lineinfile:
+        path: /etc/sysconfig/docker-storage-setup
+        state: present
+        regexp: '^VG='
+        line: 'VG=vgapp'
+    - name: Run docker storage setup
+      command: /usr/bin/docker-storage-setup
 
