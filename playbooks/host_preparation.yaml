@@ -73,14 +73,35 @@
       lvol:
         vg: vgapp
         lv: lv_emptyDir
-        size: 79g
+        size: 19g
         state: present
+        force: yes
     - name: Create docker LVM
       lvol:
         vg: vgapp
         lv: lv_docker
-        size: 100g
+        size: 160g
         state: present
+    - name: Format etcd LVM
+      filesystem:
+        fstype: xfs
+        dev: /dev/mapper/vgapp-lv_etcd
+    - name: Format emptyDir LVM
+      filesystem:
+        fstype: xfs
+        dev: /dev/mapper/vgapp-lv_emptyDir
+    - name: Mount etcd LVM
+      mount:
+        path: /var/lib/etcd
+        src: /dev/mapper/vgapp-lv_etcd
+        opts: defaults
+        state: mounted
+    - name: Mount emptyDir LVM
+      mount:
+        path: /var/lib/origin/openshift.local.volumes
+        src: /dev/mapper/vgapp-lv_emptyDir
+        opts: gquota
+        state: mounted
 
 
 # 20G etcd
