@@ -62,6 +62,7 @@
         vg: vgapp
         lv: lv_app
         state: absent
+        force: yes
     - name: Create openshift etcd LVM
       lvol:
         vg: vgapp
