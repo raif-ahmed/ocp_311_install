@@ -73,7 +73,7 @@
       lvol:
         vg: vgapp
         lv: lv_emptyDir
-        size: 80g
+        size: 79g
         state: present
     - name: Create docker LVM
       lvol:
