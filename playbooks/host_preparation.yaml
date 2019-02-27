@@ -73,15 +73,16 @@
       lvol:
         vg: vgapp
         lv: lv_emptyDir
-        size: 19g
+        size: 39g
         state: present
-        # force: yes
+        force: yes
     - name: Create docker LVM
       lvol:
         vg: vgapp
         lv: lv_docker
-        size: 160g
+        size: 140g
         state: present
+        force: yes
     - name: Format etcd LVM
       filesystem:
         fstype: xfs
