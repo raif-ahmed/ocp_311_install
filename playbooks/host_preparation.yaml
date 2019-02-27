@@ -75,7 +75,7 @@
         lv: lv_emptyDir
         size: 19g
         state: present
-        force: yes
+        # force: yes
     - name: Create docker LVM
       lvol:
         vg: vgapp
