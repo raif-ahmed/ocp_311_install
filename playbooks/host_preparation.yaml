@@ -125,14 +125,14 @@
       lvol:
         vg: vgapp
         lv: lv_emptyDir
-        size: 49g
+        size: 39g
         state: present
-        # force: yes
+        force: yes
     - name: Create docker LVM
       lvol:
         vg: vgapp
         lv: lv_docker
-        size: 150g
+        size: 60g
         state: present
     - name: Format emptyDir LVM
       filesystem:
