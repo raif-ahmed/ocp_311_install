@@ -137,6 +137,8 @@
 # Install docker and configure storage
 - name: Configure Docker
   hosts: nodes
+  environment:
+     PATH: /usr/sbin:{{ ansible_env.PATH }}
   tasks:
     - name: Install Docker
       yum:
