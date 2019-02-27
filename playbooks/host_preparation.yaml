@@ -48,8 +48,46 @@
         size: 8g
         resizefs: true
 
-# - name: Create master node logical volumes
+# Remove some default disks and create new ones
+- name: Create master node host storage
+  hosts: masters
+  tasks:
+    - name: Unmount apps LVM and remove from fstab
+      mount: 
+        path: /u01/appl
+        src: /dev/mapper/vgapp-lv_app
+        state: absent
+    - name: Delete existing apps LVM
+      lvol:
+        vg: vgapp
+        lv: lv_app
+        state: absent
+    - name: Create openshift etcd LVM
+      lvol:
+        vg: vgapp
+        lv: lv_etcd
+        size: 20g
+        state: present
+    - name: Create openshift emptyDir LVM
+      lvol:
+        vg: vgapp
+        lv: lv_emptyDir
+        size: 80g
+        state: present
+    - name: Create docker LVM
+      lvol:
+        vg: vgapp
+        lv: lv_docker
+        size: 100g
+        state: present
 
+
+# 20G etcd
+# 80G emptyVolumes
+# 100G Docker
 
 # - name: Create infra and app node logical volumes
+
+# 100G emptyVolumes
+# 100G Docker
 
