@@ -94,12 +94,14 @@
       mount:
         path: /var/lib/etcd
         src: /dev/mapper/vgapp-lv_etcd
+        fstype: xfs
         opts: defaults
         state: mounted
     - name: Mount emptyDir LVM
       mount:
         path: /var/lib/origin/openshift.local.volumes
         src: /dev/mapper/vgapp-lv_emptyDir
+        fstype: xfs
         opts: gquota
         state: mounted
 
