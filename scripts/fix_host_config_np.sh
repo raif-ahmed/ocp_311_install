@@ -30,7 +30,7 @@ echo "[DONE]"
 
 # Fix log and var disk sizes
 echo "Fix log and var disk sizes"
-lvresize --size 10G /dev/vgroot/lv_log -r
-lvresize --size 8G /dev/vgroot/lv_var -r
+/usr/sbin/lvresize --size 10G /dev/vgroot/lv_log -r
+/usr/sbin/lvresize --size 8G /dev/vgroot/lv_var -r
 
 # Fix apps disk
