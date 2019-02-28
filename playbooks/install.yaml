@@ -5,23 +5,21 @@
 # Date: 18 Feb 2019
 #################################################
 
-- name: Fix host configuration to prepare for install
-  hosts: nodes
-  tasks:
-    - name: Add path environment variable
-      lineinfile:
-        path: /etc/profile.d/path.sh
-        create: yes
-        state: present
-        regexp: '^export PATH'
-        line: 'export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin'
+# - name: Fix host configuration to prepare for install
+#   hosts: nodes
+#   tasks:
+#     - name: Add path environment variable
+#       lineinfile:
+#         path: /etc/profile.d/path.sh
+#         create: yes
+#         state: present
+#         regexp: '^export PATH'
+#         line: 'export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin'
 
 # Run pre-requisites playbook
 - name: Execute the openshift-ansible prerequisites playbook
-  environment:
-     PATH: /usr/sbin:/usr/bin:/bin:/sbin:{{ ansible_env.PATH }}
   import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 
-# Run the deployment playbook
-- name: Execute the openshift cluster deployment playbook
-  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
+# # Run the deployment playbook
+# - name: Execute the openshift cluster deployment playbook
+#   import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
