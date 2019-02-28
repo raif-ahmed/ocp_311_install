@@ -7,8 +7,10 @@
 
 # Run pre-requisites playbook
 - name: Execute the openshift-ansible prerequisites playbook
+  environment:
+     PATH: /usr/sbin:/usr/bin:/bin:/sbin:{{ ansible_env.PATH }}
   import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 
-# Run the deployment playbook
-- name: Execute the openshift cluster deployment playbook
-  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
+# # Run the deployment playbook
+# - name: Execute the openshift cluster deployment playbook
+#   import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
