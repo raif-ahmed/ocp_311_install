@@ -61,6 +61,10 @@ openshift_master_overwrite_named_certificates=True
 
 # TBC
 
+openshift_master_named_certificates=[{"certfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/master.npd.msa.libgbl.biz.crt", "keyfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/master.npd.msa.libgbl.biz.key", "names": ["master.npd.msa.libgbl.biz"], "cafile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/LG-TLSServer-CA-G1-Chain.pem"}] 
+
+openshift_hosted_router_certificate={"certfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/WC.apps.npd.msa.libgbl.biz.crt", "keyfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/apps.npd.msa.libgbl.biz.key", "cafile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/LG-TLSServer-CA-G1-Chain.pem"} 
+
 
 
 
