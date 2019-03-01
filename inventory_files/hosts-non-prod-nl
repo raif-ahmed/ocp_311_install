@@ -100,7 +100,7 @@ openshift_https_proxy="http://172.23.29.156:3128"
 #####################################################
 
 openshift_cloudprovider_kind=vsphere
-openshift_cloudprovider_vsphere_username="csa\sa_msa_admin"
+openshift_cloudprovider_vsphere_username="sa_msa_admin@csa.internal"
 openshift_cloudprovider_vsphere_password="J!84heK7$"
 openshift_cloudprovider_vsphere_host="nlcsapvcp001.csa.internal"
 openshift_cloudprovider_vsphere_datacenter=DC-NL-CSA-01
