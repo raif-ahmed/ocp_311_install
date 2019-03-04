@@ -61,9 +61,9 @@ openshift_master_overwrite_named_certificates=True
 
 # TBC
 
-#openshift_master_named_certificates=[{"certfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/master.npd.msa.libgbl.biz.crt", "keyfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/master.npd.msa.libgbl.biz.key", "names": ["master.npd.msa.libgbl.biz"], "cafile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/LG-TLSServer-CA-G1-Chain.pem"}] 
+openshift_master_named_certificates=[{"certfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/master.npd.msa.libgbl.biz.crt", "keyfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/master.npd.msa.libgbl.biz.key", "names": ["master.npd.msa.libgbl.biz"], "cafile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/LG-TLSServer-CA-G1-Chain.pem"}] 
 
-#openshift_hosted_router_certificate={"certfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/WC.apps.npd.msa.libgbl.biz.crt", "keyfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/apps.npd.msa.libgbl.biz.key", "cafile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/LG-TLSServer-CA-G1-Chain.pem"} 
+openshift_hosted_router_certificate={"certfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/WC.apps.npd.msa.libgbl.biz.crt", "keyfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/apps.npd.msa.libgbl.biz.key", "cafile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/LG-TLSServer-CA-G1-Chain.pem"} 
 
 
 
@@ -209,9 +209,9 @@ nodes
 
 # host group for masters
 [masters]
-lg-l-n-msa00001-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00001 ipv4addr=172.23.48.147 openshift_public_hostname=lg-l-n-msa00001-svc.cpn.lgi.inf.libgbl.biz
-lg-l-n-msa00002-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00002 ipv4addr=172.23.48.185 openshift_public_hostname=lg-l-n-msa00002-svc.cpn.lgi.inf.libgbl.biz
-lg-l-n-msa00003-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00003 ipv4addr=172.23.48.226 openshift_public_hostname=lg-l-n-msa00003-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00001-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00001 ipv4addr=172.23.48.147 hostname=lg-l-n-msa00001-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00002-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00002 ipv4addr=172.23.48.185 hostname=lg-l-n-msa00002-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00003-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00003 ipv4addr=172.23.48.226 hostname=lg-l-n-msa00003-svc.cpn.lgi.inf.libgbl.biz
 
 # host group for etcd
 [etcd]
@@ -221,18 +221,18 @@ lg-l-n-msa00003-svc.cpn.lgi.inf.libgbl.biz
 
 # host group for infra nodes
 [infras]
-lg-l-n-msa00004-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00004 ipv4addr=172.23.48.227 openshift_public_hostname=lg-l-n-msa00004-svc.cpn.lgi.inf.libgbl.biz
-lg-l-n-msa00005-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00005 ipv4addr=172.23.48.229 openshift_public_hostname=lg-l-n-msa00005-svc.cpn.lgi.inf.libgbl.biz
-lg-l-n-msa00006-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00006 ipv4addr=172.23.48.230 openshift_public_hostname=lg-l-n-msa00006-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00004-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00004 ipv4addr=172.23.48.227 hostname=lg-l-n-msa00004-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00005-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00005 ipv4addr=172.23.48.229 hostname=lg-l-n-msa00005-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00006-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00006 ipv4addr=172.23.48.230 hostname=lg-l-n-msa00006-svc.cpn.lgi.inf.libgbl.biz
 
 # host group for app nodes
 [apps]
-lg-l-n-msa00007-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00007 ipv4addr=172.23.48.243 openshift_public_hostname=lg-l-n-msa00007-svc.cpn.lgi.inf.libgbl.biz
-lg-l-n-msa00008-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00008 ipv4addr=172.23.48.244 openshift_public_hostname=lg-l-n-msa00008-svc.cpn.lgi.inf.libgbl.biz
-lg-l-n-msa00009-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00009 ipv4addr=172.23.49.161 openshift_public_hostname=lg-l-n-msa00009-svc.cpn.lgi.inf.libgbl.biz
-lg-l-n-msa00010-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00010 ipv4addr=172.23.49.162 openshift_public_hostname=lg-l-n-msa00010-svc.cpn.lgi.inf.libgbl.biz
-lg-l-n-msa00011-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00011 ipv4addr=172.23.49.163 openshift_public_hostname=lg-l-n-msa00011-svc.cpn.lgi.inf.libgbl.biz
-lg-l-n-msa00012-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00012 ipv4addr=172.23.49.164 openshift_public_hostname=lg-l-n-msa00012-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00007-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00007 ipv4addr=172.23.48.243 hostname=lg-l-n-msa00007-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00008-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00008 ipv4addr=172.23.48.244 hostname=lg-l-n-msa00008-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00009-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00009 ipv4addr=172.23.49.161 hostname=lg-l-n-msa00009-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00010-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00010 ipv4addr=172.23.49.162 hostname=lg-l-n-msa00010-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00011-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00011 ipv4addr=172.23.49.163 hostname=lg-l-n-msa00011-svc.cpn.lgi.inf.libgbl.biz
+lg-l-n-msa00012-svc.cpn.lgi.inf.libgbl.biz vm_name=lg-l-n-msa00012 ipv4addr=172.23.49.164 hostname=lg-l-n-msa00012-svc.cpn.lgi.inf.libgbl.biz
 
 
 # host group for nodes
