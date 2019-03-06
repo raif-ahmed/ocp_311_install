@@ -96,7 +96,7 @@
         path: /var/lib/origin/openshift.local.volumes
         src: /dev/mapper/vgapp-lv_emptyDir
         fstype: xfs
-        opts: gquota
+        opts: grpquota
         state: mounted
 
 
