@@ -211,8 +211,8 @@ nodes
 # host group for masters
 [masters]
 lg-l-n-msa00001 vm_name=lg-l-n-msa00001 ipv4addr=172.23.48.147
-lg-l-n-msa00002 vm_name=lg-l-n-msa00002 ipv4addr=172.23.48.185
-lg-l-n-msa00003 vm_name=lg-l-n-msa00003 ipv4addr=172.23.48.226
+lg-l-n-msa00002 vm_name=lg-l-n-msa00002 ipv4addr=172.23.48.142
+lg-l-n-msa00003 vm_name=lg-l-n-msa00003 ipv4addr=172.23.48.137
 
 # host group for etcd
 [etcd]
@@ -222,7 +222,7 @@ lg-l-n-msa00003
 
 # host group for infra nodes
 [infras]
-lg-l-n-msa00004 vm_name=lg-l-n-msa00004 ipv4addr=172.23.48.227
+lg-l-n-msa00004 vm_name=lg-l-n-msa00004 ipv4addr=172.23.48.223
 lg-l-n-msa00005 vm_name=lg-l-n-msa00005 ipv4addr=172.23.48.229
 lg-l-n-msa00006 vm_name=lg-l-n-msa00006 ipv4addr=172.23.48.230
 
