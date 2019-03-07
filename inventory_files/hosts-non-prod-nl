@@ -201,6 +201,7 @@ openshift_hosted_etcd_storage_labels={'storage': 'etcd'}
 
 
 [OSEv3:children]
+
 masters
 infras
 apps
