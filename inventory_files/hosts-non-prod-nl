@@ -24,7 +24,11 @@ openshift_hosted_infra_selector="node-role.kubernetes.io/infra=true"
 
 
 # Setup node groups to specify standard labels
-openshift_node_groups=[{"name": "node-config-master-custom", "labels": ["node-role.kubernetes.io/master=true","runtime=docker","region=nl","datacenter=ecx","cluster=non-prod"]}, {"name": "node-config-infra-custom", "labels": ["node-role.kubernetes.io/infra=true","runtime=docker","region=nl","datacenter=ecx","cluster=non-prod"]}, {"name": "node-config-compute-custom", "labels": ["node-role.kubernetes.io/compute=true","runtime=docker","cluster=non-prod","region=nl","datacenter=ecx"], "edits": [{ "key": "kubeletArguments.pods-per-core","value": ["20"]}]}]
+openshift_node_groups=[{"name": "node-config-master-1", "labels": ["node-role.kubernetes.io/master=true","runtime=docker","region=nl","datacenter=ecx","cluster=non-prod"],"edits": [{ "key": "nodeIP","value": "172.23.48.147"}]},{"name": "node-config-master-2", "labels": ["node-role.kubernetes.io/master=true","runtime=docker","region=nl","datacenter=ecx","cluster=non-prod"],"edits": [{ "key": "nodeIP","value": "172.23.48.142"}]},{"name": "node-config-master-3", "labels": ["node-role.kubernetes.io/master=true","runtime=docker","region=nl","datacenter=ecx","cluster=non-prod"],"edits": [{ "key": "nodeIP","value": "172.23.48.137"}]}, {"name": "node-config-infra-1", "labels": ["node-role.kubernetes.io/infra=true","runtime=docker","region=nl","datacenter=ecx","cluster=non-prod"],"edits": [{ "key": "nodeIP","value": "172.23.48.223"}]},{"name": "node-config-infra-2", "labels": ["node-role.kubernetes.io/infra=true","runtime=docker","region=nl","datacenter=ecx","cluster=non-prod"],"edits": [{ "key": "nodeIP","value": "172.23.48.229"}]},{"name": "node-config-infra-3", "labels": ["node-role.kubernetes.io/infra=true","runtime=docker","region=nl","datacenter=ecx","cluster=non-prod"],"edits": [{ "key": "nodeIP","value": "172.23.48.230"}]}, {"name": "node-config-compute-custom", "labels": ["node-role.kubernetes.io/compute=true","runtime=docker","cluster=non-prod","region=nl","datacenter=ecx"], "edits": [{ "key": "kubeletArguments.pods-per-core","value": ["20"]},{ "key": "nodeIP","value": "172.23.48.243"}]}]
+
+
+
+#'edits': [{ 'key': 'nodeIP','value': 'x.x.x.x'}]
 
 # Configure logrotate scripts
 # See: https://github.com/nickhammond/ansible-logrotate
@@ -238,15 +242,15 @@ lg-l-n-msa00007 vm_name=lg-l-n-msa00007 ipv4addr=172.23.48.243 ansible_host=172.
 
 # host group for nodes
 [nodes]
-lg-l-n-msa00001 openshift_node_group_name='node-config-master-custom'
-lg-l-n-msa00002 openshift_node_group_name='node-config-master-custom'
-lg-l-n-msa00003 openshift_node_group_name='node-config-master-custom'
-lg-l-n-msa00004 openshift_node_group_name='node-config-infra-custom'
-lg-l-n-msa00005 openshift_node_group_name='node-config-infra-custom'
-lg-l-n-msa00006 openshift_node_group_name='node-config-infra-custom'
-lg-l-n-msa00007 openshift_node_group_name='node-config-compute-custom'
-#lg-l-n-msa00008 openshift_node_group_name='node-config-compute-custom'
-#lg-l-n-msa00009 openshift_node_group_name='node-config-compute-custom'
-#lg-l-n-msa00010 openshift_node_group_name='node-config-compute-custom'
-#lg-l-n-msa00011 openshift_node_group_name='node-config-compute-custom'
-#lg-l-n-msa00012 openshift_node_group_name='node-config-compute-custom'
+lg-l-n-msa00001 openshift_node_group_name='node-config-master-1'
+lg-l-n-msa00002 openshift_node_group_name='node-config-master-2'
+lg-l-n-msa00003 openshift_node_group_name='node-config-master-3'
+lg-l-n-msa00004 openshift_node_group_name='node-config-infra-1'
+lg-l-n-msa00005 openshift_node_group_name='node-config-infra-2'
+lg-l-n-msa00006 openshift_node_group_name='node-config-infra-3'
+lg-l-n-msa00007 openshift_node_group_name='node-config-compute-1'
+#lg-l-n-msa00008 openshift_node_group_name='node-config-compute-2'
+#lg-l-n-msa00009 openshift_node_group_name='node-config-compute-3'
+#lg-l-n-msa00010 openshift_node_group_name='node-config-compute-4'
+#lg-l-n-msa00011 openshift_node_group_name='node-config-compute-5'
+#lg-l-n-msa00012 openshift_node_group_name='node-config-compute-6'
