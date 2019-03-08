@@ -103,15 +103,15 @@ openshift_https_proxy="http://172.23.29.156:3128"
 # https://docs.openshift.com/container-platform/3.11/install_config/configuring_vsphere.html
 #####################################################
 
-# openshift_cloudprovider_kind=vsphere
-# openshift_cloudprovider_vsphere_username="sa_msa_admin@csa.internal"
-# openshift_cloudprovider_vsphere_password="J!84heK7$"
-# openshift_cloudprovider_vsphere_host="nlcsapvcp001.csa.internal"
-# openshift_cloudprovider_vsphere_datacenter=DC-NL-CSA-01
-# openshift_cloudprovider_vsphere_cluster=CL-NLCSA-PAY-CORP-RHEL-01
-# openshift_cloudprovider_vsphere_resource_pool=CL-NL-CSA-PAY-CORP-RHEL-01
-# openshift_cloudprovider_vsphere_datastore="DSC_NLCSA_PROD_CORP_RHEL_GOLD_01"
-# openshift_cloudprovider_vsphere_folder="MSA_01"
+openshift_cloudprovider_kind=vsphere
+openshift_cloudprovider_vsphere_username="sa_msa_admin@csa.internal"
+openshift_cloudprovider_vsphere_password="J!84heK7$"
+openshift_cloudprovider_vsphere_host="nlcsapvcp001.csa.internal"
+openshift_cloudprovider_vsphere_datacenter=DC-NL-CSA-01
+openshift_cloudprovider_vsphere_cluster=CL-NLCSA-PAY-CORP-RHEL-01
+openshift_cloudprovider_vsphere_resource_pool=CL-NL-CSA-PAY-CORP-RHEL-01
+openshift_cloudprovider_vsphere_datastore="DSC_NLCSA_PROD_CORP_RHEL_GOLD_01"
+openshift_cloudprovider_vsphere_folder="MSA_01"
 
 # VM deployment
 #openshift_cloudprovider_vsphere_template="rhel75-template"
@@ -176,10 +176,10 @@ openshift_hosted_router_replicas=3
 ####################################################
 
 openshift_hosted_registry_selector='node-role.kubernetes.io/infra=true' 
-openshift_hosted_registry_storage_kind=EmptyDir
-# openshift_hosted_registry_storage_kind=vsphere
-# openshift_hosted_registry_storage_access_modes=['ReadWriteOnce']
-# openshift_hosted_registry_storage_annotations=['volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/vsphere-volume']
+# openshift_hosted_registry_storage_kind=EmptyDir
+openshift_hosted_registry_storage_kind=vsphere
+openshift_hosted_registry_storage_access_modes=['ReadWriteOnce']
+openshift_hosted_registry_storage_annotations=['volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/vsphere-volume']
 openshift_hosted_registry_replicas=1
 
 
