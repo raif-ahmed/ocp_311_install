@@ -210,9 +210,9 @@ nodes
 
 # host group for masters
 [masters]
-lg-l-n-msa00001 vm_name=lg-l-n-msa00001 ipv4addr=172.23.48.147
-lg-l-n-msa00002 vm_name=lg-l-n-msa00002 ipv4addr=172.23.48.142
-lg-l-n-msa00003 vm_name=lg-l-n-msa00003 ipv4addr=172.23.48.137
+lg-l-n-msa00001 vm_name=lg-l-n-msa00001 ipv4addr=172.23.48.147 openshift_kubelet_name_override=lg-l-n-msa00001 openshift_ip=172.23.48.147
+lg-l-n-msa00002 vm_name=lg-l-n-msa00002 ipv4addr=172.23.48.142 openshift_kubelet_name_override=lg-l-n-msa00002 openshift_ip=172.23.48.142
+lg-l-n-msa00003 vm_name=lg-l-n-msa00003 ipv4addr=172.23.48.137 openshift_kubelet_name_override=lg-l-n-msa00003 openshift_ip=172.23.48.137
 
 # host group for etcd
 [etcd]
@@ -222,18 +222,18 @@ lg-l-n-msa00003
 
 # host group for infra nodes
 [infras]
-lg-l-n-msa00004 vm_name=lg-l-n-msa00004 ipv4addr=172.23.48.223
-lg-l-n-msa00005 vm_name=lg-l-n-msa00005 ipv4addr=172.23.48.229
-lg-l-n-msa00006 vm_name=lg-l-n-msa00006 ipv4addr=172.23.48.230
+lg-l-n-msa00004 vm_name=lg-l-n-msa00004 ipv4addr=172.23.48.223 openshift_kubelet_name_override=lg-l-n-msa00004 openshift_ip=172.23.48.223
+lg-l-n-msa00005 vm_name=lg-l-n-msa00005 ipv4addr=172.23.48.229 openshift_kubelet_name_override=lg-l-n-msa00005 openshift_ip=172.23.48.229
+lg-l-n-msa00006 vm_name=lg-l-n-msa00006 ipv4addr=172.23.48.230 openshift_kubelet_name_override=lg-l-n-msa00006 openshift_ip=172.23.48.230
 
 # host group for app nodes
 [apps]
-lg-l-n-msa00007 vm_name=lg-l-n-msa00007 ipv4addr=172.23.48.243
-lg-l-n-msa00008 vm_name=lg-l-n-msa00008 ipv4addr=172.23.48.244
-lg-l-n-msa00009 vm_name=lg-l-n-msa00009 ipv4addr=172.23.49.161
-lg-l-n-msa00010 vm_name=lg-l-n-msa00010 ipv4addr=172.23.49.162
-lg-l-n-msa00011 vm_name=lg-l-n-msa00011 ipv4addr=172.23.49.163
-lg-l-n-msa00012 vm_name=lg-l-n-msa00012 ipv4addr=172.23.49.164
+lg-l-n-msa00007 vm_name=lg-l-n-msa00007 ipv4addr=172.23.48.243 openshift_kubelet_name_override=lg-l-n-msa00007 openshift_ip=172.23.48.243
+lg-l-n-msa00008 vm_name=lg-l-n-msa00008 ipv4addr=172.23.48.244 openshift_kubelet_name_override=lg-l-n-msa00008 openshift_ip=172.23.48.244
+lg-l-n-msa00009 vm_name=lg-l-n-msa00009 ipv4addr=172.23.49.161 openshift_kubelet_name_override=lg-l-n-msa00009 openshift_ip=172.23.49.161
+lg-l-n-msa00010 vm_name=lg-l-n-msa00010 ipv4addr=172.23.49.162 openshift_kubelet_name_override=lg-l-n-msa00010 openshift_ip=172.23.49.162
+lg-l-n-msa00011 vm_name=lg-l-n-msa00011 ipv4addr=172.23.49.163 openshift_kubelet_name_override=lg-l-n-msa00011 openshift_ip=172.23.49.163
+lg-l-n-msa00012 vm_name=lg-l-n-msa00012 ipv4addr=172.23.49.164 openshift_kubelet_name_override=lg-l-n-msa00012 openshift_ip=172.23.49.164
 
 
 # host group for nodes
