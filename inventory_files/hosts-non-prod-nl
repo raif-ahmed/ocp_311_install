@@ -210,7 +210,7 @@ nodes
 
 # host group for masters
 [masters]
-lg-l-n-msa00001 vm_name=lg-l-n-msa00001 ipv4addr=172.23.48.147 ansible_host=172.23.48.147
+lg-l-n-msa00001 vm_name=lg-l-n-msa00001 ipv4addr=172.23.48.147 ansible_host=172.23.48.147 ansible_nodename=lg-l-n-msa00001
 lg-l-n-msa00002 vm_name=lg-l-n-msa00002 ipv4addr=172.23.48.142 ansible_host=172.23.48.142
 lg-l-n-msa00003 vm_name=lg-l-n-msa00003 ipv4addr=172.23.48.137 ansible_host=172.23.48.137
 
