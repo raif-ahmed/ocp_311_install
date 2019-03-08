@@ -223,7 +223,7 @@ lg-l-n-msa00003
 # host group for infra nodes
 [infras]
 lg-l-n-msa00004 vm_name=lg-l-n-msa00004 ipv4addr=172.23.48.223
-lg-l-n-msa00005 vm_name=lg-l-n-msa00005 ipv4addr=172.23.48.229
+lg-l-n-msa00005 vm_name=lg-l-n-msa00005 ipv4addr=172.23.48.229 ansible_host=172.23.48.229
 lg-l-n-msa00006 vm_name=lg-l-n-msa00006 ipv4addr=172.23.48.230
 
 # host group for app nodes
