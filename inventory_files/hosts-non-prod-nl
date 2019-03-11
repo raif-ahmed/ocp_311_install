@@ -97,6 +97,7 @@ os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
 # Proxy details
 openshift_http_proxy="http://172.23.29.156:3128"
 openshift_https_proxy="http://172.23.29.156:3128"
+openshift_no_proxy=".csa.internal,.libgbl.biz"
 
 #####################################################
 # VSphere
