@@ -1,0 +1,14 @@
+---
+#################################################
+# Openshift One-click install
+# Author: B.F. Taljaard
+# Date: 18 Feb 2019
+#################################################
+
+# Run pre-requisites playbook
+- name: Execute the openshift-ansible prerequisites playbook
+  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+
+# Run the deployment playbook
+- name: Execute the openshift cluster deployment playbook
+  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml

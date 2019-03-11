@@ -1,0 +1,14 @@
+---
+#################################################
+# Openshift One-click install
+# Author: B.F. Taljaard
+# Date: 18 Feb 2019
+#################################################
+
+# Setup client users
+- name: Setup client users
+  hosts: localhost
+  tasks:
+    - name: Run user setup script
+      script: /home_ldap/btaljaard/ocp_311_install/scripts/setup_users_and_groups.sh
+      

@@ -4,19 +4,13 @@
 # Author: B.F. Taljaard
 # Date: 18 Feb 2019
 #################################################
-# Configure networking to be similar to multi-tenancy plugin
-- name: Execute network migrate script
-  hosts: localhost
-  tasks:
-    - name: Execute network-policy migrate script
-      script: /root/rh_adv_deployment_homework/scripts/apply-network-policies.sh
 
 # Create project template to ensure projects get default network policies and limits
 - name: Load new project template
   hosts: localhost
   tasks:
     - name: Load new project template
-      shell: oc apply -n default -f /root/rh_adv_deployment_homework/resources/project_template.yaml
+      shell: oc apply -n default -f /home_ldap/btaljaard/ocp_311_install/resources/project_template.yaml
 
 # Configure masters to use the new project template
 - name: Configure openshift to use the new template
@@ -40,5 +34,5 @@
   hosts: localhost
   tasks:
     - name: Run user setup script
-      script: /root/rh_adv_deployment_homework/scripts/setup_users_and_groups.sh
+      script: /home_ldap/btaljaard/ocp_311_install/scripts/setup_users_and_groups.sh
       

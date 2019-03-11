@@ -99,7 +99,7 @@ objects:
       openshift.io/description: ${PROJECT_DESCRIPTION}
       openshift.io/display-name: ${PROJECT_DISPLAYNAME}
       openshift.io/requester: ${PROJECT_REQUESTING_USER}
-      openshift.io/node-selector: "client=${PROJECT_CLIENT}"
+      openshift.io/node-selector: "env=${PROJECT_ENVIRONMENT}"
     creationTimestamp: null
     name: ${PROJECT_NAME}
   spec: {}
@@ -176,6 +176,5 @@ parameters:
 - name: PROJECT_DESCRIPTION
 - name: PROJECT_ADMIN_USER
 - name: PROJECT_REQUESTING_USER
-- name: PROJECT_CLIENT
+- name: PROJECT_ENVIRONMENT
   required: true
-  value: "common"
