@@ -111,7 +111,7 @@ openshift_cloudprovider_vsphere_host="nlcsapvcp001.csa.internal"
 openshift_cloudprovider_vsphere_datacenter=DC-NL-CSA-01
 openshift_cloudprovider_vsphere_cluster=CL-NL-CSA-PAY-CORP-RHEL-01
 openshift_cloudprovider_vsphere_resource_pool=Resources
-openshift_cloudprovider_vsphere_datastore="DSC_NL_ECX_CLD_PRD_CORP_RHEL_01"
+openshift_cloudprovider_vsphere_datastore="DS_NL_ECX_CLD_PRD_CORP_RHEL_01_002"
 openshift_cloudprovider_vsphere_folder="TN_LG/NPRD/CORP/MSA_01"
 
 
@@ -186,6 +186,7 @@ openshift_hosted_registry_storage_kind=vsphere
 openshift_hosted_registry_storage_access_modes=['ReadWriteOnce']
 openshift_hosted_registry_storage_annotations=['volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/vsphere-volume']
 openshift_hosted_registry_replicas=1
+openshift_hosted_registry_storage_volume_size=100Gi
 
 
 ####################################################
