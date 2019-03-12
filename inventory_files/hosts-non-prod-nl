@@ -205,6 +205,16 @@ openshift_hosted_etcd_storage_volume_size=1G
 openshift_hosted_etcd_storage_labels={'storage': 'etcd'}
 
 
+###########################################################################
+### Openshift build defaults
+###########################################################################
+
+openshift_builddefaults_resources_requests_cpu=100m
+openshift_builddefaults_resources_requests_memory=512Mi
+openshift_builddefaults_resources_limits_cpu=2000m
+openshift_builddefaults_resources_limits_memory=1512Mi
+
+
 
 [OSEv3:children]
 
