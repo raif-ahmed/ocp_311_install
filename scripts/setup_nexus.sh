@@ -11,7 +11,7 @@ if (( $(oc get dc -n cicd|grep nexus|wc -l) == 0 )); then
 	# Call template to provision nexus objects
 	oc new-app -f /home_ldap/btaljaard/ocp_311_install/resources/templates/nexus3.yaml \
 		-p CPU_LIMITS=1000m -p MEM_REQUESTS=1Gi \
-		-p MEM_LIMITS=2Gi -p VOLUME_CAPACITY=2G -n cicd
+		-p MEM_LIMITS=2Gi -p VOLUME_CAPACITY=10G -n cicd
 fi
 
 # Wait for nexus to start before we configure it
