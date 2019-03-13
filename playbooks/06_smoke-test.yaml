@@ -10,4 +10,4 @@
   hosts: localhost
   tasks:
     - name: Run smoke test script
-      script: /root/rh_adv_deployment_homework/scripts/smoke_test.sh
+      script: /home_ldap/btaljaard/ocp_311_install/scripts/smoke_test.sh

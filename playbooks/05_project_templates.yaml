@@ -28,11 +28,3 @@
       - "controllers"
       register: result
       until: result.rc == 0
-
-# Setup client users
-- name: Setup client users
-  hosts: localhost
-  tasks:
-    - name: Run user setup script
-      script: /home_ldap/btaljaard/ocp_311_install/scripts/setup_users_and_groups.sh
-      

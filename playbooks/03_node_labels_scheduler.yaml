@@ -5,7 +5,7 @@
 # Date: 18 Feb 2019
 #################################################
 
-- name: Set Node Labels for environments
+- name: Configure pod placement and scheduling
   hosts: localhost
   tasks:
     - name: Call node labels script
