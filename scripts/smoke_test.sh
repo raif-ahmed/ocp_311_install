@@ -4,6 +4,8 @@
 
 oc new-project smoke-test
 oc new-app nodejs-mongo-persistent -n smoke-test
+oc delete route nodejs-mongo-persistent
+oc create route edge --service=nodejs-mongo-persistent
 
 # Wait for both pods to be running (ignore build and deploy pods)
 while (( $(oc get pod -n smoke-test|grep -e mongodb -e nodejs-mongo-persistent |grep -v build|grep -v deploy|grep 1/1|wc -l) != 2 )); do 

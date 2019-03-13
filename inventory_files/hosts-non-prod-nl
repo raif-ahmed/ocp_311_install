@@ -20,7 +20,7 @@ openshift_use_crio=False
 #openshift_disable_check="disk_availability,memory_availability,docker_image_availability,package_version"
 
 # Default infra components to infra nodes
-openshift_hosted_infra_selector="node-role.kubernetes.io/infra=true"
+# openshift_hosted_infra_selector="node-role.kubernetes.io/infra=true"
 
 
 # Setup node groups to specify standard labels and node ip
