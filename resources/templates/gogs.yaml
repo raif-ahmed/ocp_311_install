@@ -145,7 +145,7 @@ items:
         creationTimestamp: null
         labels:
           app: postgresql-persistent
-          name: postgresql
+          name: postgresql-gogs
       spec:
         containers:
         - env:
