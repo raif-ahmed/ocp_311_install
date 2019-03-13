@@ -1,35 +1,20 @@
 #!/bin/bash
-# Setup Sonarqube Project
-if [ "$#" -ne 1 ]; then
-    echo "Usage:"
-    echo "  $0 GUID"
-    exit 1
+# Create CICD project
+if (( $(oc get projects|grep cicd|wc -l) == 0 )); then
+  oc new-project cicd
+  oc label namespace cicd "name=cicd"
 fi
-
-GUID=$1
-echo "Setting up Sonarqube in project $GUID-sonarqube"
-
-# Code to set up the SonarQube project.
-# Ideally just calls a template
-# oc new-app -f ../templates/sonarqube.yaml --param .....
-
-# To be Implemented by Student
-################################################################
-
-# Ensure that we are creating the objects in the correct project
-oc project ${GUID}-sonarqube
-
 # Call template to provision nexus objects
 
-##TODO: Add more parameters
 
-oc new-app -f Infrastructure/templates/sonarqube.yaml -p GUID=${GUID} -n ${GUID}-sonarqube \
+oc new-app -f /home_ldap/btaljaard/ocp_311_install/resources/templates/sonarqube.yaml \
+  -n cicd \
 	-p SONARQUBE_CPU_LIMITS=2000m -p DB_CPU_LIMITS=1000m \
 	-p SONARQUBE_MEM_REQUESTS=3Gi -p SONARQUBE_MEM_LIMITS=3Gi
 
 while : ; do
   echo "Checking if Sonarqube is Ready..."
-  oc get pod -n ${GUID}-sonarqube|grep -v deploy|grep -v postgresql|grep "1/1"
+  oc get pod -n cicd|grep sonarqube|grep -v deploy|grep -v postgresql|grep "1/1"
   [[ "$?" == "1" ]] || break
   echo "...no. Sleeping 10 seconds."
   sleep 10

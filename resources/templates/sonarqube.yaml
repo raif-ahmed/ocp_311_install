@@ -4,9 +4,6 @@ metadata:
   creationTimestamp: null
   name: sonarqube
 parameters:
-- name: GUID
-  description: Unique GUID for tenant prefix
-  required: true
 - name: SONARQUBE_MEM_REQUESTS
   description: Requested memory for pod
   required: true
@@ -163,7 +160,7 @@ objects:
         volumes:
         - name: postgresql-data
           persistentVolumeClaim:
-            claimName: pvc-${GUID}-postgresql
+            claimName: pvc-postgresql
     test: false
     triggers:
     - imageChangeParams:
@@ -276,7 +273,7 @@ objects:
         volumes:
         - name: sonarqube-volume-1
           persistentVolumeClaim:
-            claimName: pvc-${GUID}-sonarqube
+            claimName: pvc-sonarqube
     test: false
     triggers:
     - type: ConfigChange
@@ -287,7 +284,7 @@ objects:
         from:
           kind: ImageStreamTag
           name: sonarqube:6.7.4
-          namespace: ${GUID}-sonarqube
+          namespace: cicd
       type: ImageChange
 
 - apiVersion: v1
@@ -341,7 +338,7 @@ objects:
     labels:
       app: postgresql-persistent
       template: postgresql-persistent-template
-    name: pvc-${GUID}-postgresql
+    name: pvc-postgresql
   spec:
     accessModes:
     - ReadWriteOnce
@@ -352,7 +349,7 @@ objects:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: pvc-${GUID}-sonarqube
+    name: pvc-sonarqube
   spec:
     accessModes:
     - ReadWriteOnce
@@ -416,6 +413,8 @@ objects:
     host: ${CUSTOM_SONARQUBE_HOSTNAME}
     port:
       targetPort: 9000-tcp
+    tls:
+      termination: edge
     to:
       kind: Service
       name: sonarqube
