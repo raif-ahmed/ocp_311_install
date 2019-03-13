@@ -4,9 +4,6 @@ metadata:
   creationTimestamp: null
   name: nexus3
 parameters:
-- name: GUID
-  description: Unique GUID for tenant prefix
-  required: true
 - name: MEM_REQUESTS
   description: Requested memory for pod
   required: false
@@ -121,7 +118,7 @@ objects:
         volumes:
         - name: nexus3-volume-1
           persistentVolumeClaim:
-            claimName: pvc-${GUID}-nexus
+            claimName: pvc-nexus
     test: false
     triggers:
     - type: ConfigChange
@@ -132,7 +129,7 @@ objects:
         from:
           kind: ImageStreamTag
           name: nexus3:latest
-          namespace: ${GUID}-nexus
+          namespace: cicd
       type: ImageChange
   status:
     availableReplicas: 0
@@ -227,7 +224,7 @@ objects:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: pvc-${GUID}-nexus
+    name: pvc-nexus
   spec:
     accessModes:
     - ReadWriteOnce
