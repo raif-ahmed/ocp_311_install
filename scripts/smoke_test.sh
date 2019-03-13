@@ -17,7 +17,7 @@ done
 sleep 5
 
 # Run integration test
-curl http://$(oc -n smoke-test get route nodejs-mongo-persistent --template='{{ .spec.host }}')|grep "Welcome to your Node.js application on OpenShift"
+curl -k https://$(oc -n smoke-test get route nodejs-mongo-persistent --template='{{ .spec.host }}')|grep "Welcome to your Node.js application on OpenShift"
 
 # Check exit code and fail if we did not get the expected result
 if (( $? != 0 )); then
