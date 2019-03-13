@@ -278,7 +278,7 @@ objects:
       dockerStrategy:
         from:
           kind: ImageStreamTag
-          name: jenkins-slave-maven-centos7:latest
+          name: jenkins-slave-maven-rhel7:latest
       type: Docker
     successfulBuildsHistoryLimit: 5
     triggers:
@@ -311,7 +311,7 @@ objects:
     - annotations: null
       from:
         kind: DockerImage
-        name: docker-registry.default.svc:5000/cicd/jenkins-slave-appdev:latest
+        name: docker-registry.default.svc:5000/cicd/jenkins-slave-maven-skopeo:latest
       generation: null
       importPolicy: {}
       name: latest
@@ -329,17 +329,17 @@ objects:
     generation: 2
     labels:
       build: jenkins-slave-maven-skopeo
-    name: jenkins-slave-maven-centos7
+    name: jenkins-slave-maven-rhel7
   spec:
-    dockerImageRepository: docker.io/openshift/jenkins-slave-maven-centos7
+    dockerImageRepository: openshift3/jenkins-slave-maven-rhel7
     lookupPolicy:
       local: false
     tags:
     - annotations:
-        openshift.io/imported-from: docker.io/openshift/jenkins-slave-maven-centos7:latest
+        openshift.io/imported-from: openshift3/jenkins-slave-maven-rhel7:latest
       from:
         kind: DockerImage
-        name: docker.io/openshift/jenkins-slave-maven-centos7:latest
+        name: openshift3/jenkins-slave-maven-rhel7:latest
       generation: 2
       importPolicy: {}
       name: latest
