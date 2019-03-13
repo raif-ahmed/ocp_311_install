@@ -270,7 +270,7 @@ objects:
     resources: {}
     runPolicy: Serial
     source:
-      contextDir: Infrastructure/jenkins_slave
+      contextDir: resources/jenkins_slave
       git:
         uri: ${REPO}
       type: Git
