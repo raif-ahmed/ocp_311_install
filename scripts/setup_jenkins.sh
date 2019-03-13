@@ -11,11 +11,11 @@ fi
 # Check if jenkins is deployed
 if (( $(oc get dc -n cicd|grep jenkins|wc -l) == 0 )); then
   # Jenkins is not deployed yet
-  oc new-app -f /home_ldap/btaljaard/ocp_311_install/resources/templates/jenkins_template.yaml \
+  oc new-app -f /home_ldap/btaljaard/ocp_311_install/resources/templates/jenkins.yaml \
   -p MEM_REQUESTS=1Gi -p MEM_LIMITS=2Gi -p VOLUME_CAPACITY=4G \
   -p CPU_REQUESTS=1000m -p CPU_LIMITS=1500m -n cicd
-  oc delete route jenkins
-  oc create route edge --service=jenkins
+  # oc delete route jenkins
+  # oc create route edge --service=jenkins
 fi
 
 # Check if Jenkins is up
