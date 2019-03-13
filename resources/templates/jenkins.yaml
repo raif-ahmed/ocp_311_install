@@ -331,15 +331,15 @@ objects:
       build: jenkins-slave-maven-skopeo
     name: jenkins-agent-maven-35-rhel7
   spec:
-    dockerImageRepository: openshift3/jenkins-agent-maven-35-rhel7
+    dockerImageRepository: registry.access.redhat.com/openshift3/jenkins-agent-maven-35-rhel7
     lookupPolicy:
       local: false
     tags:
     - annotations:
-        openshift.io/imported-from: openshift3/jenkins-agent-maven-35-rhel7:latest
+        openshift.io/imported-from: registry.access.redhat.com/openshift3/jenkins-agent-maven-35-rhel7:latest
       from:
         kind: DockerImage
-        name: openshift3/jenkins-agent-maven-35-rhel7:latest
+        name: registry.access.redhat.com/openshift3/jenkins-agent-maven-35-rhel7:latest
       generation: 2
       importPolicy: {}
       name: latest
