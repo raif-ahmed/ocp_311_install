@@ -10,14 +10,14 @@ fi
 if (( $(oc get dc -n cicd|grep nexus|wc -l) == 0 )); then
 	# Call template to provision nexus objects
 	oc new-app -f /home_ldap/btaljaard/ocp_311_install/resources/templates/nexus3.yaml \
-		-p GUID=${GUID} -p CPU_LIMITS=1000m -p MEM_REQUESTS=1Gi \
+		-p CPU_LIMITS=1000m -p MEM_REQUESTS=1Gi \
 		-p MEM_LIMITS=2Gi -p VOLUME_CAPACITY=2G -n cicd
 fi
 
 # Wait for nexus to start before we configure it
 while : ; do
   echo "Checking if Nexus is Ready..."
-  oc get pod -n cicd|grep -v deploy|grep "1/1"
+  oc get pod -n cicd|grep nexus|grep -v deploy|grep "1/1"
   [[ "$?" == "1" ]] || break
   echo "...no. Sleeping 10 seconds."
   sleep 10
