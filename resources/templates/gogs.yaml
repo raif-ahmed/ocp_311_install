@@ -131,7 +131,7 @@ items:
     replicas: 1
     revisionHistoryLimit: 10
     selector:
-      name: postgresql
+      name: postgresql-gogs
     strategy:
       activeDeadlineSeconds: 21600
       recreateParams:
