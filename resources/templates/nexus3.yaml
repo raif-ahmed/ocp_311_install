@@ -175,6 +175,8 @@ objects:
     host: ${CUSTOM_NEXUS_HOSTNAME}
     port:
       targetPort: 8081-tcp
+    tls:
+      termination: edge
     to:
       kind: Service
       name: nexus3
