@@ -278,7 +278,7 @@ objects:
       dockerStrategy:
         from:
           kind: ImageStreamTag
-          name: jenkins-slave-maven-rhel7:latest
+          name: jenkins-agent-maven-35-rhel7:latest
       type: Docker
     successfulBuildsHistoryLimit: 5
     triggers:
