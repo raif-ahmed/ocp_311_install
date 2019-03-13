@@ -4,15 +4,6 @@ metadata:
   creationTimestamp: null
   name: jenkins
 parameters:
-- name: GUID
-  description: Unique GUID for tenant prefix
-  required: true
-- name: REPO
-  description: Git repository URL
-  required: true
-- name: CLUSTER
-  description: Cluster name for openshift
-  required: true
 - name: CUSTOM_JENKINS_HOSTNAME
   description: Set a custom hostname for jenkins route
   required: false
@@ -43,10 +34,10 @@ parameters:
   description: Capacity of persistent volume
   required: false
   value: 4G
-- name: CUSTOM_NEXUS_HOSTNAME
-  description: Set a custom hostname for Nexus route
-  required: false
-  value: ""
+
+- name: REPO
+  description: Git repository URL
+  required: true
 
 
 objects:
@@ -266,15 +257,15 @@ objects:
       openshift.io/generated-by: OpenShiftNewBuild
     creationTimestamp: null
     labels:
-      build: jenkins-slave-appdev
-    name: jenkins-slave-appdev
+      build: jenkins-slave-maven-skopeo
+    name: jenkins-slave-maven-skopeo
   spec:
     failedBuildsHistoryLimit: 5
     nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: jenkins-slave-appdev:latest
+        name: jenkins-slave-maven-skopeo:latest
     postCommit: {}
     resources: {}
     runPolicy: Serial
@@ -302,101 +293,6 @@ objects:
       type: ImageChange
   status:
     lastVersion: 0
-- apiVersion: v1
-  kind: BuildConfig
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewBuild
-    creationTimestamp: null
-    labels:
-      build: mlbparks-pipeline
-    name: mlbparks-pipeline
-  spec:
-    nodeSelector: {}
-    output: {}
-    postCommit: {}
-    resources: {}
-    runPolicy: Serial
-    source:
-      contextDir: MLBParks
-      git:
-        ref: master
-        uri: ${REPO}
-      type: Git
-    strategy:
-      jenkinsPipelineStrategy:
-        env:
-        - name: CLUSTER
-          value: ${CLUSTER}
-        - name: GUID
-          value: ${GUID}
-        jenkinsfilePath: Jenkinsfile
-      type: JenkinsPipeline
-    triggers: {}
- 
-- apiVersion: v1
-  kind: BuildConfig
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewBuild
-    creationTimestamp: null
-    labels:
-      build: nationalparks-pipeline
-    name: nationalparks-pipeline
-  spec:
-    nodeSelector: {}
-    output: {}
-    postCommit: {}
-    resources: {}
-    runPolicy: Serial
-    source:
-      contextDir: Nationalparks
-      git:
-        ref: master
-        uri: ${REPO}
-      type: Git
-    strategy:
-      jenkinsPipelineStrategy:
-        env:
-        - name: CLUSTER
-          value: ${CLUSTER}
-        - name: GUID
-          value: ${GUID}
-        jenkinsfilePath: Jenkinsfile
-      type: JenkinsPipeline
-    triggers: {}
- 
-- apiVersion: v1
-  kind: BuildConfig
-  metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewBuild
-    creationTimestamp: null
-    labels:
-      build: parksmap-pipeline
-    name: parksmap-pipeline
-  spec:
-    nodeSelector: {}
-    output: {}
-    postCommit: {}
-    resources: {}
-    runPolicy: Serial
-    source:
-      contextDir: ParksMap
-      git:
-        ref: master
-        uri: ${REPO}
-      type: Git
-    strategy:
-      jenkinsPipelineStrategy:
-        env:
-        - name: CLUSTER
-          value: ${CLUSTER}
-        - name: GUID
-          value: ${GUID}
-        jenkinsfilePath: Jenkinsfile
-      type: JenkinsPipeline
-    triggers: {}
 
 - apiVersion: v1
   kind: ImageStream
@@ -406,8 +302,8 @@ objects:
     creationTimestamp: null
     generation: 1
     labels:
-      build: jenkins-slave-appdev
-    name: jenkins-slave-appdev
+      build: jenkins-slave-maven-skopeo
+    name: jenkins-slave-maven-skopeo
   spec:
     lookupPolicy:
       local: false
@@ -415,7 +311,7 @@ objects:
     - annotations: null
       from:
         kind: DockerImage
-        name: docker-registry.default.svc:5000/${GUID}-jenkins/jenkins-slave-appdev:latest
+        name: docker-registry.default.svc:5000/cicd/jenkins-slave-appdev:latest
       generation: null
       importPolicy: {}
       name: latest
@@ -432,7 +328,7 @@ objects:
     creationTimestamp: null
     generation: 2
     labels:
-      build: jenkins-slave-appdev
+      build: jenkins-slave-maven-skopeo
     name: jenkins-slave-maven-centos7
   spec:
     dockerImageRepository: docker.io/openshift/jenkins-slave-maven-centos7
