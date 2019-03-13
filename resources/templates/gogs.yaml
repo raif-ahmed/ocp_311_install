@@ -329,7 +329,6 @@ items:
   kind: ConfigMap
   metadata:
     name: gogs
-    namespace: bft-gogs
     
 
 - apiVersion: v1
@@ -351,21 +350,16 @@ items:
     name: postgresql
  
   type: Opaque
+
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    annotations:
-      openshift.io/generated-by: OpenShiftNewApp
-      pv.kubernetes.io/bind-completed: "yes"
-      pv.kubernetes.io/bound-by-controller: "yes"
-      volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/vsphere-volume
     finalizers:
     - kubernetes.io/pvc-protection
     labels:
       app: postgresql-persistent
       template: postgresql-persistent-template
     name: postgresql
-    namespace: bft-gogs
   spec:
     accessModes:
     - ReadWriteOnce
@@ -373,27 +367,15 @@ items:
       requests:
         storage: 2Gi
     storageClassName: vsphere-standard
-  status:
-    accessModes:
-    - ReadWriteOnce
-    capacity:
-      storage: 2Gi
-    phase: Bound
+  status: {}
+
+
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    annotations:
-      pv.kubernetes.io/bind-completed: "yes"
-      pv.kubernetes.io/bound-by-controller: "yes"
-      volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/vsphere-volume
-    creationTimestamp: 2019-03-13T21:28:44Z
     finalizers:
     - kubernetes.io/pvc-protection
     name: pvc-gogs
-    namespace: bft-gogs
-    resourceVersion: "78402"
-    selfLink: /api/v1/namespaces/bft-gogs/persistentvolumeclaims/pvc-dc55c
-    uid: fab0f605-45d6-11e9-8176-005056b29712
   spec:
     accessModes:
     - ReadWriteOnce
