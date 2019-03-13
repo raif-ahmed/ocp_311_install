@@ -1,0 +1,14 @@
+---
+#################################################
+# Openshift One-click install
+# Author: B.F. Taljaard
+# Date: 18 Feb 2019
+#################################################
+# Configure networking to be similar to multi-tenancy plugin
+- name: Execute network migrate script
+  hosts: localhost
+  tasks:
+    - name: Execute network-policy migrate script
+      script: /home_ldap/btaljaard/ocp_311_install/scripts/apply-network-policies.sh
+
+      

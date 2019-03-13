@@ -1,0 +1,12 @@
+---
+#################################################
+# Openshift One-click install
+# Author: B.F. Taljaard
+# Date: 18 Feb 2019
+#################################################
+
+- name: Set Node Labels for environments
+  hosts: localhost
+  tasks:
+    - name: Call node labels script
+      script: /home_ldap/btaljaard/ocp_311_install/scripts/set_node_labels.sh

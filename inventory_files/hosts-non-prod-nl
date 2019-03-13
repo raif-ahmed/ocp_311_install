@@ -51,7 +51,9 @@ openshift_master_cluster_method=native
 openshift_master_cluster_hostname=master-int.npd.msa.libgbl.biz
 
 # Master external VIP DNS Name
+# This will need to be updated when we add the mgmt loadbalancer for the master nodes
 openshift_master_cluster_public_hostname=master.npd.msa.libgbl.biz
+
 
 # Infra VIP DNS Name (wildcard)
 # Wildcard domain for applications
@@ -62,8 +64,6 @@ openshift_master_default_subdomain=apps.npd.msa.libgbl.biz
 ####################################################
 
 openshift_master_overwrite_named_certificates=True
-
-# TBC
 
 openshift_master_named_certificates=[{"certfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/master.npd.msa.libgbl.biz.crt", "keyfile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/master.npd.msa.libgbl.biz.key", "names": ["master.npd.msa.libgbl.biz"], "cafile": "/home_ldap/btaljaard/ocp_311_install/resources/certificates/LG-TLSServer-CA-G1-Chain.pem"}] 
 
@@ -93,6 +93,8 @@ openshift_master_htpasswd_file=/home_ldap/btaljaard/ocp_311_install/resources/ht
 
 os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
 
+osm_cluster_network_cidr=10.100.0.0/14
+openshift_portal_net=10.170.0.0/16
 
 # Proxy details
 openshift_http_proxy="http://172.23.29.156:3128"
@@ -111,12 +113,15 @@ openshift_cloudprovider_vsphere_host="nlcsapvcp001.csa.internal"
 openshift_cloudprovider_vsphere_datacenter=DC-NL-CSA-01
 openshift_cloudprovider_vsphere_cluster=CL-NL-CSA-PAY-CORP-RHEL-01
 openshift_cloudprovider_vsphere_resource_pool=Resources
+
+# At the moment this is configured to point to a single datastore directly and not to a global datastore
+# Need to verify what the options are with openshift. Maybe we need to dedicate a datastore only for openshift.
+#DSC_NL_ECX_CLD_PRD_CORP_RHEL_01/DS_NL_ECX_CLD_PRD_CORP_RHEL_01_006
 openshift_cloudprovider_vsphere_datastore="DS_NL_ECX_CLD_PRD_CORP_RHEL_01_002"
+
 openshift_cloudprovider_vsphere_folder="TN_LG/NPRD/CORP/MSA_01"
 
 
-#DSC_NL_ECX_CLD_PRD_CORP_RHEL_01/DS_NL_ECX_CLD_PRD_CORP_RHEL_01_006
-#TN_LG/NPRD/CORP/MSA_01
 
 # VM deployment
 #openshift_cloudprovider_vsphere_template="rhel75-template"
@@ -181,7 +186,6 @@ openshift_hosted_router_replicas=3
 ####################################################
 
 openshift_hosted_registry_selector='node-role.kubernetes.io/infra=true' 
-# openshift_hosted_registry_storage_kind=EmptyDir
 openshift_hosted_registry_storage_kind=vsphere
 openshift_hosted_registry_storage_access_modes=['ReadWriteOnce']
 openshift_hosted_registry_storage_annotations=['volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/vsphere-volume']
