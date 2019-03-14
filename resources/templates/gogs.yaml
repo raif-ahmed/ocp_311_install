@@ -216,17 +216,17 @@ objects:
             valueFrom:
               secretKeyRef:
                 key: database-user
-                name: postgresql
+                name: postgresql-gogs
           - name: POSTGRESQL_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: database-password
-                name: postgresql
+                name: postgresql-gogs
           - name: POSTGRESQL_DATABASE
             valueFrom:
               secretKeyRef:
                 key: database-name
-                name: postgresql
+                name: postgresql-gogs
           image: docker-registry.default.svc:5000/openshift/postgresql@sha256:d740d4960134a692d4d4a19a04c191b563a9cebc4f3dea04e92ae47d08e03451
           imagePullPolicy: IfNotPresent
           livenessProbe:
@@ -413,7 +413,7 @@ objects:
     labels:
       app: postgresql-persistent-gogs
       template: postgresql-persistent-template
-    name: postgresql
+    name: postgresql-gogs
   type: Opaque
 
 - apiVersion: v1
