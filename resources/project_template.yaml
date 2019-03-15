@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Template
 metadata:
   creationTimestamp: null
-  name: project-request
+  name: project-request-opco-env
 objects:
 # Set Default network policies
 - kind: NetworkPolicy
@@ -54,8 +54,8 @@ objects:
           cpu: "10"
           memory: 8Gi
         default:
-          cpu: 1000m
-          memory: 500Mi
+          cpu: 200m
+          memory: 256Mi
         defaultRequest:
           cpu: 100m
           memory: 100Mi
@@ -97,11 +97,11 @@ objects:
   metadata:
     annotations:
       openshift.io/description: ${PROJECT_DESCRIPTION}
-      openshift.io/display-name: ${PROJECT_DISPLAYNAME}
+      openshift.io/display-name: ${PROJECT_OPCO}-${PROJECT_NAME}-${PROJECT_ENVIRONMENT}
       openshift.io/requester: ${PROJECT_REQUESTING_USER}
       openshift.io/node-selector: "${PROJECT_ENVIRONMENT}=true"
     creationTimestamp: null
-    name: ${PROJECT_NAME}
+    name: ${PROJECT_OPCO}-${PROJECT_NAME}-${PROJECT_ENVIRONMENT}
   spec: {}
   status: {}
 - apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -112,7 +112,7 @@ objects:
         this namespace.  It is auto-managed by a controller; remove subjects to disable.
     creationTimestamp: null
     name: system:image-pullers
-    namespace: ${PROJECT_NAME}
+    namespace: ${PROJECT_OPCO}-${PROJECT_NAME}-${PROJECT_ENVIRONMENT}
   roleRef:
     apiGroup: rbac.authorization.k8s.io
     kind: ClusterRole
@@ -120,7 +120,7 @@ objects:
   subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: Group
-    name: system:serviceaccounts:${PROJECT_NAME}
+    name: system:serviceaccounts:${PROJECT_OPCO}-${PROJECT_NAME}-${PROJECT_ENVIRONMENT}
 - apiVersion: rbac.authorization.k8s.io/v1beta1
   kind: RoleBinding
   metadata:
@@ -129,7 +129,7 @@ objects:
         this namespace.  It is auto-managed by a controller; remove subjects to disable.
     creationTimestamp: null
     name: system:image-builders
-    namespace: ${PROJECT_NAME}
+    namespace: ${PROJECT_OPCO}-${PROJECT_NAME}-${PROJECT_ENVIRONMENT}
   roleRef:
     apiGroup: rbac.authorization.k8s.io
     kind: ClusterRole
@@ -137,7 +137,7 @@ objects:
   subjects:
   - kind: ServiceAccount
     name: builder
-    namespace: ${PROJECT_NAME}
+    namespace: ${PROJECT_OPCO}-${PROJECT_NAME}-${PROJECT_ENVIRONMENT}
 - apiVersion: rbac.authorization.k8s.io/v1beta1
   kind: RoleBinding
   metadata:
@@ -147,7 +147,7 @@ objects:
         to disable.
     creationTimestamp: null
     name: system:deployers
-    namespace: ${PROJECT_NAME}
+    namespace: ${PROJECT_OPCO}-${PROJECT_NAME}-${PROJECT_ENVIRONMENT}
   roleRef:
     apiGroup: rbac.authorization.k8s.io
     kind: ClusterRole
@@ -155,13 +155,13 @@ objects:
   subjects:
   - kind: ServiceAccount
     name: deployer
-    namespace: ${PROJECT_NAME}
+    namespace: ${PROJECT_OPCO}-${PROJECT_NAME}-${PROJECT_ENVIRONMENT}
 - apiVersion: rbac.authorization.k8s.io/v1beta1
   kind: RoleBinding
   metadata:
     creationTimestamp: null
     name: admin
-    namespace: ${PROJECT_NAME}
+    namespace: ${PROJECT_OPCO}-${PROJECT_NAME}-${PROJECT_ENVIRONMENT}
   roleRef:
     apiGroup: rbac.authorization.k8s.io
     kind: ClusterRole
@@ -172,7 +172,6 @@ objects:
     name: ${PROJECT_ADMIN_USER}
 parameters:
 - name: PROJECT_NAME
-- name: PROJECT_DISPLAYNAME
 - name: PROJECT_DESCRIPTION
 - name: PROJECT_ADMIN_USER
 - name: PROJECT_REQUESTING_USER

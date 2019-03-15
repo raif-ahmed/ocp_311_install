@@ -20,7 +20,7 @@
       replace:
         path: /etc/origin/master/master-config.yaml
         regexp: "  projectRequestTemplate: ''"
-        replace:  "  projectRequestTemplate: 'default/project-request'"
+        replace:  "  projectRequestTemplate: 'default/project-request-opco-env'"
     - name: Restart master services 
       command: /usr/local/bin/master-restart "{{ item }}"
       with_items:
