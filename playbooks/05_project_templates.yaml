@@ -10,7 +10,7 @@
   hosts: localhost
   tasks:
     - name: Load new project template
-      shell: oc apply -n default -f /home_ldap/btaljaard/ocp_311_install/resources/project_template.yaml
+      shell: oc apply -n default -f /home_ldap/btaljaard/ocp_311_install/resources/project_template_multi_tenancy.yaml
 
 # Configure masters to use the new project template
 - name: Configure openshift to use the new template
@@ -20,7 +20,7 @@
       replace:
         path: /etc/origin/master/master-config.yaml
         regexp: "  projectRequestTemplate: ''"
-        replace:  "  projectRequestTemplate: 'default/project-request-opco-env'"
+        replace:  "  projectRequestTemplate: 'default/project-request-multi-tenant'"
     - name: Restart master services 
       command: /usr/local/bin/master-restart "{{ item }}"
       with_items:
