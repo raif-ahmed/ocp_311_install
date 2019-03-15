@@ -21,7 +21,7 @@
         path: /etc/origin/master/master-config.yaml
         state: present
         regexp: "^  projectRequestTemplate:"
-        replace:  "  projectRequestTemplate: 'default/project-request-multi-tenant'"
+        line:  "  projectRequestTemplate: 'default/project-request-multi-tenant'"
     - name: Restart master services 
       command: /usr/local/bin/master-restart "{{ item }}"
       with_items:
