@@ -17,9 +17,10 @@
   hosts: masters
   tasks:
     - name: Add the new project template
-      replace:
+      lineinfile:
         path: /etc/origin/master/master-config.yaml
-        regexp: "  projectRequestTemplate: ''"
+        state: present
+        regexp: "^  projectRequestTemplate:"
         replace:  "  projectRequestTemplate: 'default/project-request-multi-tenant'"
     - name: Restart master services 
       command: /usr/local/bin/master-restart "{{ item }}"
